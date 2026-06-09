@@ -32,6 +32,14 @@
         android:layout_height="wrap_content"
         android:text="Registrar" />
 
+    <EditText
+        android:id="@+id/ettFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="Filtrar por nombre" />
+
     <Button
         android:layout_gravity="center"
         android:id="@+id/btnShowUsers"
