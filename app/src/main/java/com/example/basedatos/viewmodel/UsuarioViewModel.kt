@@ -15,4 +15,9 @@ class UsuarioViewModel(private val repository: UsuarioRepository) : ViewModel() 
             _usuarios.value= repository.getAllUsuarios()
         }
     }
+    fun agregarUsuarios(usuario: Usuario) {
+        viewModelScope.launch {
+            repository.addUsuario(usuario)
+        }
+    }
 }

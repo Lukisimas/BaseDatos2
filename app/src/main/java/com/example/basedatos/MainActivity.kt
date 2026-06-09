@@ -5,11 +5,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.basedatos.databinding.ActivityMainBinding
+import com.example.basedatos.model.Usuario
+import com.example.basedatos.repositories.UsuarioRepository
+import com.example.basedatos.viewmodel.UsuarioViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    lateinit var viewModel: UsuarioViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,5 +31,36 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val db= MyApplication.getDatabase(this)
+        val repository= UsuarioRepository(db.usuarioDao())
+        viewModel= UsuarioViewModel(repository)
+
+        binding.btnInsert.setOnClickListener {
+            val usuario = Usuario(0,binding.ettName.text.toString(),
+                binding.ettAge.text.toString().toInt())
+            viewModel.agregarUsuarios(usuario)
+        }
+
+        binding.btnShowUsers.setOnClickListener {
+            viewModel.cargarUsuarios()
+        }
+
+        lifecycleScope.launch{
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.usuarios.collect{ listaDeUsuarios->
+                    if(listaDeUsuarios.isEmpty()) {
+                        binding.tvwUsers.text= "La base de datos está vacía."
+                    } else{
+                        val stringBuilder= StringBuilder()
+                        listaDeUsuarios.forEach{ usuario ->
+                            stringBuilder.append("ID: ${usuario.id} | Nombre: ${usuario.nombre} | Edad: ${usuario.edad}\n")
+                        }
+                        binding.tvwUsers.text= stringBuilder.toString()
+                    }
+                }
+            }
+        }
+
     }
 }

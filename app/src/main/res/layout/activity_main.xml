@@ -32,4 +32,18 @@
         android:layout_height="wrap_content"
         android:text="Registrar" />
 
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/btnShowUsers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mostrar usuarios" />
+
+    <TextView
+        android:layout_gravity="center"
+        android:id="@+id/tvwUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Usuarios" />
+
 </LinearLayout>

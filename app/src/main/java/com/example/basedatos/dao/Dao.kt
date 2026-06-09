@@ -11,4 +11,6 @@ interface UsuarioDao {
     suspend fun insertarUsuario(usuario: Usuario)
     @Query("SELECT * FROM usuarios_table")
     suspend fun obtenerUsuarios(): List<Usuario>
+    @Query("SELECT * FROM usuarios_table WHERE nombre LIKE :nombre")
+    suspend fun buscarPorNombre(nombre: String): List<Usuario>
 }
